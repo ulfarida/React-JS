@@ -9,13 +9,12 @@ class Header extends Component {
         this.props.history.push('/')
     }
 
-    handleRouterNav = categoryName => {
-        const category = categoryName;
+    routeCategory = categoryValue => {
+        const category = categoryValue;
         this.props.history.replace("/news/" + category);
     };
 
     render () {
-        console.warn("cek this props header", this.props)
         return (
              <header>
                 <div className="container-fluid">
@@ -29,10 +28,10 @@ class Header extends Component {
                         <div className="col-md-5">
                             <div className="home-header-nav">
                                 <ul className="list-unstyled home-header-nav__list">
-                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('soccer') : () => this.handleRouterNav('soccer') }><h6>Sepakbola</h6></li>
-                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('economy') : () => this.handleRouterNav('economy')}><h6>Ekonomi</h6></li>
-                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('politic') : () => this.handleRouterNav('politic')}><h6>Politik</h6></li>
-                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('entertainment') : () => this.handleRouterNav('entertainment')}><h6>Hiburan</h6></li>
+                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('soccer') : () => this.routeCategory('soccer') }><h6>Sepakbola</h6></li>
+                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('economy') : () => this.routeCategory('economy')}><h6>Ekonomi</h6></li>
+                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('politic') : () => this.routeCategory('politic')}><h6>Politik</h6></li>
+                                    <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('entertainment') : () => this.routeCategory('entertainment')}><h6>Hiburan</h6></li>
                                     <li><Link to="/profile"><h6>Profile</h6></Link></li>
                                 </ul>
                             </div>

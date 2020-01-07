@@ -10,7 +10,6 @@ class Auth extends Component {
     }
 
     setInput = (event) => {
-        console.warn("cek event target", event.target.value)
         this.setState({ [event.target.name] : event.target.value })
     }
 

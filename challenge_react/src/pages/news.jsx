@@ -38,22 +38,18 @@ class News extends Component {
 
 
     setInput = event => {
-        console.warn("cek e pada handle input change", event.target);
-        console.warn("event", event.target.value);
         const keyword = event.target.value;
         this.setState({ search: keyword });
         this.searchNews(keyword);
     };
 
     searchNews = async keyword => {
-        console.log("searchNews", keyword);
         const self = this;
         if (keyword.length > 2) {
           try {
             const response = await axios.get(
                 urlHeadline+'&q='+keyword
             );
-            console.log(response);
             self.setState({ listNews: response.data.articles });
           } catch (error) {
             console.error(error);
