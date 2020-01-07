@@ -33,7 +33,7 @@ header {
     font-weight: bold;
 }
 
- .home-header-nav__list li h6 {
+ .home-header-nav__list li h6, .home {
     padding: 0 10px;
     display: block;
     text-decoration: none;

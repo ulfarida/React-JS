@@ -5,16 +5,14 @@ import { Link } from 'react-router-dom'
 
 class Header extends Component {
     afterSignout = () => {
-        console.warn(localStorage)
         localStorage.removeItem("auth")
-        this.props.history.push('/home')
+        this.props.history.push('/')
     }
 
     handleRouterNav = categoryName => {
         const category = categoryName;
         this.props.history.replace("/news/" + category);
-      };
-    
+    };
 
     render () {
         console.warn("cek this props header", this.props)
@@ -25,7 +23,7 @@ class Header extends Component {
                         <div className="col-md-2">
                             <ul className="list-unstyled home-header-nav__list">
                                 <li className="logo"><img src={logo} alt=""/></li>
-                                <li onClick={this.props.isCategoryNews !== undefined ? () => this.props.setCategory('general') : () => this.handleRouterNav('general') }><h6>Home</h6></li>
+                                <li><h6><Link className="home" to="/">Home</Link></h6></li>
                             </ul>
                         </div>
                         <div className="col-md-5">

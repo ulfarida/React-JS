@@ -11,7 +11,7 @@ const Mainroute = () => {
     return (
         <BrowserRouter>
             <Switch>
-                <Route exact path='/home' component={News} />
+                <Route exact path='/' component={News} />
                 <Route exact path='/auth' component={Auth} />
                 <Route exact path='/profile' component={Profile} />
                 <Route exact path='/news/:category' component={News} />

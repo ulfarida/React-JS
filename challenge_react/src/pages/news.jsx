@@ -61,8 +61,7 @@ class News extends Component {
         }
       };
 
-    componentDidMount = () => {
-        // alert('function masuk') 
+    componentDidMount = () => { 
         const self = this;
         this.getNews(self.state.category)
     };
