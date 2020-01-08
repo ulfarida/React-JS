@@ -47,9 +47,7 @@ class News extends Component {
         const self = this;
         if (keyword.length > 2) {
           try {
-            const response = await axios.get(
-                urlHeadline+'&q='+keyword
-            );
+            const response = await axios.get(urlHeadline+'&q='+keyword);
             self.setState({ listNews: response.data.articles });
           } catch (error) {
             console.error(error);

@@ -48,7 +48,7 @@ class Auth extends Component {
                         <div className="input-box">
                             <input 
                                 type="text" 
-                                nama="username"
+                                name="username"
                                 placeholder="username" 
                                 onChange={e => this.setInput(e)} 
                             />
@@ -56,7 +56,7 @@ class Auth extends Component {
                         <div className="input-box">
                             <input 
                                 type="password" 
-                                nama="password" 
+                                name="password" 
                                 placeholder="password" 
                                 onChange={e => this.setInput(e)} 
                             />
