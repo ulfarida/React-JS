@@ -14,7 +14,7 @@ class Auth extends Component {
             password : this.props.password
         }
         axios
-            .post("https://alta123.free.beeceptor.com/auth", input)
+            .post("https://alta1234.free.beeceptor.com/auth", input)
             .then(function(response) {
                 console.warn(response.data)
                 if(response.data.hasOwnProperty("token")) {
