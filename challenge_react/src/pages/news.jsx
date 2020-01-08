@@ -1,20 +1,12 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import ListArticle from '../components/listArticle'
 import Header from '../components/header'
 import TopNews from '../components/topNews'
-
-const apiKey = "58fecc904b4e40ef920ae5582000d89a";
-const baseUrl = "https://newsapi.org/v2/";
-const urlHeadline = baseUrl + "everything?language=en&apiKey=" + apiKey;
+import { connect } from "unistore/react";
+import { actions, store } from "../store";
+import { Redirect } from "react-router-dom"
 
 class News extends Component {
-    state = {
-        listNews : [],
-        isLoading : true,
-        category : 'general',
-        search : ''
-    };
 
     setCategoryNews = async value => {
         const category = value;
@@ -23,45 +15,25 @@ class News extends Component {
     }
 
     getNews = () => {
-        const self = this;
-        const paramCategory = this.props.match.params.category
-        axios
-            .get(urlHeadline+'&q='+paramCategory)
-            .then(function(response) {
-                self.setState({ listNews: response.data.articles, isLoading: false})
-            })
-
-            .catch(function(error) {
-                self.setState({ isLoading: false })
-            })
+        const paramCategory = this.props.match.params.category;
+        this.props.getNewsAxios(paramCategory, 'everything');
     }
-
 
     setInput = event => {
         const keyword = event.target.value;
-        this.setState({ search: keyword });
-        this.searchNews(keyword);
+        store.setState({ search: keyword });
+        if (keyword.length > 2) {
+            this.props.getNewsAxios(keyword, 'everything')
+        }
     };
 
-    searchNews = async keyword => {
-        const self = this;
-        if (keyword.length > 2) {
-          try {
-            const response = await axios.get(urlHeadline+'&q='+keyword);
-            self.setState({ listNews: response.data.articles });
-          } catch (error) {
-            console.error(error);
-          }
-        }
-      };
-
     componentDidMount = () => { 
-        const self = this;
-        this.getNews(self.state.category)
+        this.props.getNewsAxios(this.props.category, 'everything')
     };
 
     render () {
-        const { listNews, isLoading } = this.state;
+        const listNews = this.props.listNews
+        const isLoading = this.props.isLoading
         const topHeadlines = listNews.filter(item => {
             if (item.content !== null && item.image !== null) {
                 return item;
@@ -80,11 +52,13 @@ class News extends Component {
             );
         });
 
-        return (
+        if (this.props.auth===false) {
+            return <Redirect to={{ pathname: '/auth'}} /> } 
+        else { return (
             <div>
                 <Header 
                     doSearch={event => this.setInput(event)}
-                    keyword={this.state.search}
+                    keyword={this.props.search}
                     placeholder="type something"
                     setCategory={e => this.setCategoryNews(e)}
                     isCategoryNews={true} 
@@ -101,8 +75,8 @@ class News extends Component {
                 </div>
             </div>
 
-        );
+        )};
     }
 }
 
-export default News;
+export default connect("category, listNews, isLoading, search, auth", actions)(News);

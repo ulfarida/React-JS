@@ -2,16 +2,22 @@ import React, { Component } from 'react';
 import logo from '../logo.svg';
 import search from '../images/search.png'
 import { Link } from 'react-router-dom'
+import { connect } from "unistore/react";
+import { actions, store } from "../store";
 
 class Header extends Component {
     afterSignout = () => {
-        localStorage.removeItem("auth")
+        store.setState({auth : false})
+        this.props.history.push('/auth')
+    }
+
+    homeRoute = () => {
         this.props.history.push('/')
+        this.props.getNewsAxios('other', 'everything')
     }
 
     routeCategory = categoryValue => {
-        const category = categoryValue;
-        this.props.history.replace("/news/" + category);
+        this.props.history.replace("/news/" + categoryValue);
     };
 
     render () {
@@ -22,7 +28,7 @@ class Header extends Component {
                         <div className="col-md-2">
                             <ul className="list-unstyled home-header-nav__list">
                                 <li className="logo"><img src={logo} alt=""/></li>
-                                <li><h6><Link className="home" to="/">Home</Link></h6></li>
+                                <li><h6><Link onClick={this.homeRoute} className="home">Home</Link></h6></li>
                             </ul>
                         </div>
                         <div className="col-md-5">
@@ -59,4 +65,4 @@ class Header extends Component {
     }
 }
 
-export default Header;
+export default connect("auth", actions)(Header);

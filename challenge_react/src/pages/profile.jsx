@@ -1,13 +1,11 @@
 import React from "react"
 import { Redirect } from "react-router-dom"
 import Header from "../components/header"
+import { connect } from "unistore/react";
+import { actions } from "../store";
 
 const Profile = (props) => {
-    const auth = localStorage.getItem("auth")
-    const username = localStorage.getItem("username")
-    const email = localStorage.getItem("email")
-
-    if (auth===null) {
+    if (props.auth===false) {
         return <Redirect to={{ pathname: '/auth'}} />
     } else {
         return (
@@ -15,11 +13,11 @@ const Profile = (props) => {
                 <Header {...props} />
                 <div className="auth text-center">
                     <h1>Profile</h1>
-                    <h5>Username: {username}</h5>
-                    <h5>Email: {email}</h5>
+                    <h5>Username: {props.username}</h5>
+                    <h5>Email: {props.email}</h5>
                 </div>
             </div>
         )}
 }
 
-export default Profile
+export default connect("auth, username, email", actions)(Profile);

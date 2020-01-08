@@ -1,35 +1,29 @@
 import React, { Component } from 'react';
 import Header from "../components/header"
-import axios from "axios"
 import { withRouter } from 'react-router-dom'
+import { connect } from "unistore/react";
+import { actions, store } from "../store";
+import axios from "axios"
 
 class Auth extends Component {
-    state = {
-        username : '',
-        password : ''
-    }
-
-    setInput = (event) => {
-        this.setState({ [event.target.name] : event.target.value })
-    }
-
     afterSignin = () => {
-        const { username, password } = this.state
+        console.warn('after signin')
         const self = this
         const input = {
-            username : username,
-            password : password
+            username : this.props.username,
+            password : this.props.password
         }
         axios
-            .post("https://authaltab4.free.beeceptor.com/auth", input)
+            .post("https://alta123.free.beeceptor.com/auth", input)
             .then(function(response) {
                 console.warn(response.data)
                 if(response.data.hasOwnProperty("token")) {
-                    localStorage.setItem("username", response.data.username)
-                    localStorage.setItem("email", response.data.email)
-                    localStorage.setItem("token", response.data.token)
-                    localStorage.setItem("auth", true)
+                    store.setState({username : response.data.username})
+                    store.setState({email : response.data.email})
+                    store.setState({token : response.data.token})
+                    store.setState({auth : true})
                     self.props.history.push("/profile")
+                    console.warn(self)
                 }
             })
             .catch(function(error) {
@@ -37,7 +31,6 @@ class Auth extends Component {
             })
     }
     
-
     render () {
         return (
             <div>
@@ -50,7 +43,7 @@ class Auth extends Component {
                                 type="text" 
                                 name="username"
                                 placeholder="username" 
-                                onChange={e => this.setInput(e)} 
+                                onChange={e => this.props.setInput(e)} 
                             />
                         </div>
                         <div className="input-box">
@@ -58,7 +51,7 @@ class Auth extends Component {
                                 type="password" 
                                 name="password" 
                                 placeholder="password" 
-                                onChange={e => this.setInput(e)} 
+                                onChange={e => this.props.setInput(e)} 
                             />
                         </div>
                         <div className="input-box">
@@ -74,4 +67,4 @@ class Auth extends Component {
     }
 }
 
-export default withRouter(Auth);
+export default connect("username, password", actions)(withRouter(Auth));

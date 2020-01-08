@@ -1,39 +1,23 @@
 import React, { Component } from 'react';
-import axios from 'axios'
 import TopArticle from './topArticle'
+import { connect } from "unistore/react";
+import { actions } from "../store";
 
-const apiKey = "58fecc904b4e40ef920ae5582000d89a";
-const baseUrl = "https://newsapi.org/v2/";
-const urlHeadline = baseUrl + "top-headlines?country=us&q=IT&apiKey=" + apiKey;
 
 class TopNews extends Component {
-    state = {
-        listNews : [],
-        isLoading : true
-    };
-
     componentDidMount = () => {
-        const self = this;
-        axios
-            .get(urlHeadline)
-            .then(function(response) {
-                self.setState({ listNews: response.data.articles, isLoading: false})
-            })
-
-            .catch(function(error) {
-                self.setState({ isLoading: false })
-            })
+        this.props.getNewsAxios('general', 'top-headlines')
     };
 
     render () {
-        const { listNews, isLoading } = this.state;
+        const listNews = this.props.listNews;
+        const isLoading = this.props.isLoading;
         const topHeadlines = listNews.filter(item => {
             if (item.content !== null && item.image !== null) {
                 return item;
             }
             return false;
         })
-
         return (
             <div className="headlineNews">
                 { isLoading ? <div className="loading text-center">Loading...</div> : <TopArticle news={topHeadlines}/> }
@@ -42,4 +26,4 @@ class TopNews extends Component {
     }
 }
 
-export default TopNews;
+export default connect("listNews, isLoading, search", actions)(TopNews);
